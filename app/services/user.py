@@ -39,14 +39,14 @@ class UserService:
     #                                PWD_HASH_ITERATIONS).decode("utf-8", "ignore")
 
     def generate_password(self, password):
-        hash_digest = hashlib.pbkdf2_hmac('sha256', password.encode(),
+        hash_digest = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'),
                                           PWD_HASH_SALT, PWD_HASH_ITERATIONS)
         return base64.b64encode(hash_digest)
 
     def compare_password(self, pwd_by_bd, pwd_on_test) -> bool:
         decoded_digest = base64.b64decode(pwd_by_bd)
 
-        hash_digest = hashlib.pbkdf2_hmac('sha256', pwd_on_test.encode(),
+        hash_digest = hashlib.pbkdf2_hmac('sha256', pwd_on_test.encode('utf-8'),
                                           PWD_HASH_SALT, PWD_HASH_ITERATIONS)
         return hmac.compare_digest(decoded_digest, hash_digest)
 #       return pwd_by_bd == pwd_on_test
